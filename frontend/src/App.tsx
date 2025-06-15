@@ -1,6 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { ThemeProvider, createTheme, Box, Button, Divider } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -15,37 +21,46 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#6366f1', // Purple
-      light: '#818cf8',
-      dark: '#4338ca',
+      main: '#FC4C02', // Strava Orange
+      contrastText: '#fff',
     },
     secondary: {
-      main: '#a5b4fc', // Light purple
-      light: '#c4b5fd',
-      dark: '#818cf8',
+      main: '#212529', // Slate/Dark Gray
+      contrastText: '#fff',
     },
     background: {
-      default: '#ffffff',
-      paper: '#f8fafc',
+      default: '#F5F5F5', // Light gray
+      paper: '#fff',      // Card backgrounds
     },
     text: {
-      primary: '#1e293b',
-      secondary: '#64748b',
+      primary: '#212529', // Almost black
+      secondary: '#6c757d', // Muted gray
     },
+  },
+  typography: {
+    fontFamily: 'Inter, Roboto, Arial, sans-serif',
+    h1: { fontWeight: 700 },
+    h2: { fontWeight: 700 },
+    h3: { fontWeight: 600 },
+    h4: { fontWeight: 600 },
+    h5: { fontWeight: 500 },
+    h6: { fontWeight: 500 },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 8,
+          textTransform: 'none',
+          fontWeight: 600,
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          backgroundImage: 'none',
+          borderRadius: 16,
+          boxShadow: '0 2px 12px rgba(44,62,80,0.05)',
         },
       },
     },
@@ -67,52 +82,43 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        {location !== '/dashboard' && (
-          <Box sx={{ position: 'fixed', top: 24, left: 24, zIndex: 1000, display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Button 
-              component={Link} 
-              to="/login" 
-              variant="text" 
-              sx={{ 
-                color: theme.palette.primary.main, 
-                fontWeight: 600, 
-                fontSize: 18, 
-                textTransform: 'none', 
-                '&:hover': { 
-                  color: theme.palette.primary.dark, 
-                  bgcolor: 'transparent' 
-                } 
-              }}
-            >
-              Login
+        {/* Strava-Style Top Navigation Bar */}
+        <AppBar position="fixed" color="inherit" elevation={2} sx={{ bgcolor: '#fff', color: '#18181b', boxShadow: 2, zIndex: 1201 }}>
+          <Toolbar sx={{ justifyContent: 'space-between', minHeight: 64 }}>
+            {/* Logo */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <img src="/vite.svg" alt="FitTrack Logo" style={{ height: 36 }} />
+              <Typography variant="h6" sx={{ color: '#FC4C02', fontWeight: 700, letterSpacing: 1 }}>FitTrack</Typography>
+            </Box>
+            {/* Navigation Links */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Button
+                component={Link}
+                to="/dashboard"
+                sx={{ color: '#18181b', fontWeight: 600, px: 2, '&:hover': { color: '#FC4C02', bgcolor: 'transparent' } }}
+              >
+                Dashboard
+              </Button>
+              <Button
+                sx={{ color: '#18181b', fontWeight: 600, px: 2, '&:hover': { color: '#FC4C02', bgcolor: 'transparent' } }}
+              >
+                Training
+              </Button>
+              <Button
+                sx={{ color: '#18181b', fontWeight: 600, px: 2, '&:hover': { color: '#FC4C02', bgcolor: 'transparent' } }}
+              >
+                Maps
+              </Button>
+            </Box>
+            {/* Profile Icon */}
+            <Button sx={{ minWidth: 0, p: 0, ml: 2, borderRadius: '50%' }}>
+              <Box sx={{ bgcolor: '#FC4C02', color: '#fff', width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>M</Typography>
+              </Box>
             </Button>
-            <Divider 
-              orientation="vertical" 
-              flexItem 
-              sx={{ 
-                borderColor: theme.palette.secondary.main, 
-                mx: 0.5 
-              }} 
-            />
-            <Button 
-              component={Link} 
-              to="/register" 
-              variant="text" 
-              sx={{ 
-                color: theme.palette.primary.main, 
-                fontWeight: 600, 
-                fontSize: 18, 
-                textTransform: 'none', 
-                '&:hover': { 
-                  color: theme.palette.primary.dark, 
-                  bgcolor: 'transparent' 
-                } 
-              }}
-            >
-              Register
-            </Button>
-          </Box>
-        )}
+          </Toolbar>
+        </AppBar>
+        <Box sx={{ pt: 10 }} />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

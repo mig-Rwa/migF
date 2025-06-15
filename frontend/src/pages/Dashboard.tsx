@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import {
   Box, Button, Card, CardContent, Typography, Avatar, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, IconButton, Switch, AppBar, Toolbar, CssBaseline, Modal, TextField, Fade, ListItemButton, MenuItem, Select, InputLabel, FormControl, RadioGroup, Radio
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import TimelineIcon from '@mui/icons-material/Timeline';
@@ -197,26 +198,32 @@ const Dashboard: React.FC = () => {
         return (
           <>
             {/* Quick Stats */}
-            <Box sx={{ display: 'flex', gap: 3, mb: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Card sx={{ minWidth: 180, p: 2, bgcolor: '#6366f1', color: '#fff', borderRadius: 3, boxShadow: 3, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 8 } }}>
-                <CardContent>
-                  <Typography variant="h6">Workouts</Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>{workouts.length}</Typography>
-                </CardContent>
-              </Card>
-              <Card sx={{ minWidth: 180, p: 2, bgcolor: '#818cf8', color: '#fff', borderRadius: 3, boxShadow: 3, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 8 } }}>
-                <CardContent>
-                  <Typography variant="h6">Progress</Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>{progress.length}</Typography>
-                </CardContent>
-              </Card>
-              <Card sx={{ minWidth: 180, p: 2, bgcolor: '#a5b4fc', color: '#18181b', borderRadius: 3, boxShadow: 3, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 8 } }}>
-                <CardContent>
-                  <Typography variant="h6">Streak</Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>{getStreak()} days</Typography>
-                </CardContent>
-              </Card>
-            </Box>
+            <Grid container spacing={3} sx={{ mb: 4, justifyContent: 'center' }}>
+  <Grid item xs={12} sm={6} md={4}>
+    <Card className="card" sx={{ bgcolor: '#FC4C02', color: '#fff', borderRadius: 3, boxShadow: 3, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 8 } }}>
+      <CardContent>
+        <Typography variant="h6">Workouts</Typography>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>{workouts.length}</Typography>
+      </CardContent>
+    </Card>
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <Card className="card" sx={{ bgcolor: '#212529', color: '#fff', borderRadius: 3, boxShadow: 3, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 8 } }}>
+      <CardContent>
+        <Typography variant="h6">Progress</Typography>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>{progress.length}</Typography>
+      </CardContent>
+    </Card>
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <Card className="card" sx={{ bgcolor: '#fff', color: '#FC4C02', borderRadius: 3, boxShadow: 3, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 8 } }}>
+      <CardContent>
+        <Typography variant="h6">Streak</Typography>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>{getStreak()} days</Typography>
+      </CardContent>
+    </Card>
+  </Grid>
+</Grid>
             {/* Recent Activity */}
             <Card sx={{ width: '100%', maxWidth: 600, mb: 4, borderRadius: 3, boxShadow: 2 }}>
               <CardContent>
@@ -638,24 +645,12 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', bgcolor: darkMode ? '#18181b' : '#f8fafc', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', bgcolor: darkMode ? '#18181b' : '#f8fafc', minHeight: '100vh' }}>
       <CssBaseline />
-      {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: 220,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 220, boxSizing: 'border-box', bgcolor: darkMode ? '#27272a' : '#6366f1', color: '#fff', transition: 'background 0.3s' },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
-          <Avatar sx={{ bgcolor: '#fff', color: '#6366f1', width: 64, height: 64, mb: 1, boxShadow: 2 }}>
-            <PersonIcon fontSize="large" />
-          </Avatar>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>{username}</Typography>
-        </Box>
+      {/* Top Navbar */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 2, bgcolor: darkMode ? '#27272a' : '#6366f1', color: '#fff' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700 }}>{username}</Typography>
+      </Box>
         <Divider sx={{ my: 2, bgcolor: '#a5b4fc' }} />
         <List>
           {sections.map((section, idx) => (
@@ -696,28 +691,79 @@ const Dashboard: React.FC = () => {
         <Button startIcon={<LogoutIcon />} onClick={handleLogout} sx={{ color: '#fff', mb: 2, borderRadius: 2, '&:hover': { bgcolor: '#a5b4fc', color: '#18181b' } }}>
           Logout
         </Button>
-      </Drawer>
 
-      {/* Main Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <AppBar position="static" color="transparent" elevation={0} sx={{ mb: 4 }}>
-          <Toolbar>
-            <Typography variant="h4" sx={{ flexGrow: 1, color: darkMode ? '#fff' : '#18181b', fontWeight: 700 }}>
-              Hey {username ? username : 'User'}!
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        {renderSection()}
-        {/* Motivational Quote */}
-        <Fade in={true} timeout={800}>
-          <Card sx={{ width: '100%', maxWidth: 600, borderRadius: 3, boxShadow: 2, mt: 2 }}>
-            <CardContent>
-              <Typography variant="subtitle1" sx={{ fontStyle: 'italic', color: '#6366f1' }}>
-                "{quote}"
-              </Typography>
-            </CardContent>
-          </Card>
-        </Fade>
+      {/* Main Content - Strava-Style Layout (No Sidebar) */}
+      <Box sx={{ minHeight: '100vh', bgcolor: '#f6f7fb', py: 6, px: { xs: 1, sm: 3 } }}>
+        <Grid container spacing={4} justifyContent="center" sx={{ maxWidth: 1400, margin: '0 auto' }}>
+          {/* Main Content (Center) */}
+          <Grid item xs={12} md={8}>
+            {/* Profile Card at Top Center */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
+              <Card sx={{ p: 3, borderRadius: 4, boxShadow: 6, bgcolor: '#fff', width: { xs: '100%', sm: 420 }, display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+                <Avatar sx={{ width: 72, height: 72, mb: 1 }} />
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>{username || 'Your Name'}</Typography>
+                <Divider sx={{ my: 2, width: '100%' }} />
+                <Box sx={{ display: 'flex', gap: 4, width: '100%', justifyContent: 'center' }}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" color="text.secondary">Total Workouts</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 700 }}>{workouts.length}</Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" color="text.secondary">Current Streak</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 700 }}>{getStreak()} days</Typography>
+                  </Box>
+                </Box>
+              </Card>
+            </Box>
+            {/* Getting Started Feed-Style Onboarding Steps */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+              {/* Step 1 */}
+              <Card sx={{ width: '100%', maxWidth: 600, borderRadius: 4, boxShadow: 3, bgcolor: '#fff', p: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Record your first workout</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Start tracking your fitness journey by logging your first workout. You can record any type of activity you like!</Typography>
+                  <Button variant="contained" sx={{ bgcolor: '#FC4C02', color: '#fff', '&:hover': { bgcolor: '#d84315' }, borderRadius: 2 }}>Add Workout</Button>
+                </CardContent>
+              </Card>
+              {/* Step 2 */}
+              <Card sx={{ width: '100%', maxWidth: 600, borderRadius: 4, boxShadow: 3, bgcolor: '#fff', p: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Invite a friend</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Stay motivated by inviting a friend to join you on FitTrack. Share your progress and cheer each other on!</Typography>
+                  <Button variant="contained" sx={{ bgcolor: '#FC4C02', color: '#fff', '&:hover': { bgcolor: '#d84315' }, borderRadius: 2 }}>Invite Friend</Button>
+                </CardContent>
+              </Card>
+              {/* Step 3 */}
+              <Card sx={{ width: '100%', maxWidth: 600, borderRadius: 4, boxShadow: 3, bgcolor: '#fff', p: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Join a club</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Find a club to join and connect with others who share your fitness interests. Clubs help you stay engaged and motivated!</Typography>
+                  <Button variant="contained" sx={{ bgcolor: '#FC4C02', color: '#fff', '&:hover': { bgcolor: '#d84315' }, borderRadius: 2 }}>Find Clubs</Button>
+                </CardContent>
+              </Card>
+            </Box>
+          </Grid>
+
+          {/* Right Info Panel */}
+          <Grid item xs={12} md={4}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Card sx={{ p: 3, borderRadius: 4, boxShadow: 6, bgcolor: '#fff', transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 10 } }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>Join a Club</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Find or create a club to connect with other athletes and stay motivated together.
+                </Typography>
+                <Button variant="outlined" sx={{ color: '#FC4C02', borderColor: '#FC4C02', '&:hover': { bgcolor: '#FC4C02', color: '#fff' }, borderRadius: 2 }}>Find Clubs</Button>
+              </Card>
+              <Card sx={{ p: 3, borderRadius: 4, boxShadow: 6, bgcolor: '#fff', transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 10 } }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>Invite Friends</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Invite your friends to join FitTrack and keep each other accountable!
+                </Typography>
+                <Button variant="outlined" sx={{ color: '#FC4C02', borderColor: '#FC4C02', '&:hover': { bgcolor: '#FC4C02', color: '#fff' }, borderRadius: 2 }}>Invite Friends</Button>
+              </Card>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
       {/* Add Workout Modal */}
       <Modal open={addModalOpen} onClose={() => setAddModalOpen(false)}>
